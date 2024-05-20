@@ -8,7 +8,7 @@
 - Benedetta Sabatino 781701
 
 ## [Section 1] Introduction
-The aim of this project is to construct a model capable of accurately identifying the category to which each résumé belongs. This involves a thorough analysis of the dataset ensuring its cleanliness and developing a robust classification model. Additionally, an optional task is to employ OCR models to extract pertinent information from the documents. The dataset comprises 5000 scanned résumé images in TIF format.
+The aim of this project is to construct a model capable of accurately identifying the category to which each résumé belongs. This involves a comprehensive analysis of the dataset ensuring its cleanliness and developing a robust classification model. Additionally, an optional task is to employ OCR models to extract pertinent information from the documents. The dataset comprises 5000 scanned résumé images in TIF format.
 
 ## [Section 2] Methods
 
@@ -30,9 +30,10 @@ To recreate this project in environments other than Google Colab, refer to the `
   - Processes multiple images in batch mode.
 
 - #### Creation of black boxes
-  This script uses OCR and clustering algorithms to identify, merge, and highlight text regions. The processed images, where text areas are blacked out, are then saved in an output folder.
+  This script uses Optical Character Recognition (OCR) and clustering algorithms, it identifies, merges, and highlights text regions. The processed images, where text areas are blacked out, are then saved in an output folder.
   
   **Input**: output folder of image denoising
+  
   **Output**: Processed images saved with text areas blacked out to highlight text regions.
   
   **Features**:
@@ -44,8 +45,8 @@ To recreate this project in environments other than Google Colab, refer to the `
 ### Model Tuning
 
 - #### Model search
-  This script processes images to extract features, reduce dimensionality, cluster, and visualize results using pre-trained CNN models and various clustering methods. The resulting best combination is EfficientNetB0, UMAP, and KMeans.
-  
+  This script processes images to extract features, reduce dimensionality, cluster, and visualize results using pre-trained CNN models and various clustering methods. By leveraging state-of-the-art pre-trained CNN models, it ensures robust feature extraction. The combination of multiple dimensionality reduction and clustering techniques allows for a thorough exploration of the image dataset, identifying the most meaningful groupings and selecting the best combination for further analysis. The resulting best combination is EfficientNetB0, UMAP, and KMeans.
+
    **Input**: the output folder resulting from the creation of black boxes.
   
   **Output**: Processed images saved in clearly labeled folders organized by the combination of model, dimensionality reduction, and clustering method used.
@@ -57,8 +58,12 @@ To recreate this project in environments other than Google Colab, refer to the `
   - Output Structure: Saves images in labeled folders for easy analysis and presentation.
 
 - #### Grid search
-  This script combines deep learning features from EfficientNet with traditional image processing techniques (LBP and HOG) to capture comprehensive image information. UMAP is used for dimensionality reduction and KMeans for clustering. The script ensures optimal clustering performance through hyperparameter tuning.
+  This script combines deep learning features from EfficientNet with traditional image processing techniques (LBP and HOG) to capture comprehensive image information. UMAP is used for dimensionality reduction and KMeans for clustering. The script ensures optimal clustering performance through hyperparameter tuning and organizes the output for easy analysis and presentation, providing the best combination which is:
   
+  -	UMAP Parameters: n_neighbors=50, min_dist=0.1, metric='euclidean', spread=1.0, n_epochs=200, negative_sample_rate=0.1.
+  - KMeans Parameters: n_clusters=4, init='k-means++', n_init=10, tol=0.0001, algorithm='lloyd'.
+
+
   **Input**: the output folder resulting from the creation of black boxes.
   
   **Output**: Processed images saved in clearly labeled folders organized by the combination of UMAP and KMeans parameters used and the best combination.
@@ -74,23 +79,23 @@ To recreate this project in environments other than Google Colab, refer to the `
 ### Models
 
 - #### First approach: Unsupervised Model
-  This script provides a robust approach to image feature extraction, data augmentation, dimensionality reduction, clustering, and visualization by combining traditional image processing techniques with deep learning features. EfficientNet is used for high-quality feature extraction while custom features (LBP and HOG) capture additional texture and shape information. UMAP is applied for dimensionality reduction and KMeans for clustering.
-  
+  This script provides a robust approach to image feature extraction, data augmentation, dimensionality reduction, clustering, and visualization by combining traditional image processing techniques with deep learning features. EfficientNet is used for high-quality feature extraction, while custom features (LBP and HOG) capture additional texture and shape information. UMAP is applied for dimensionality reduction and KMeans for clustering, allowing thorough exploration of the image dataset to identify meaningful groupings. The chosen parameters result from extensive model and parameter search, ensuring the best performance.
+
   **Input**: A folder containing black boxed images
   
   **Output**: Processed images saved in clearly labeled folders organized by the combination of UMAP and KMeans parameters used.
   
   **Features**:
   - Feature Extraction: Uses EfficientNet for high-quality features and custom features (LBP and HOG) for texture and edge information.
-  - Data Augmentation: Applies various transformations such as rotation (up to 20 degrees), width and height shifts (up to 20%), shear transformations (up to 20%), zoom (up to 20%), and horizontal flips to enhance the diversity of the training data.
+  - Data Augmentation: Applies various transformations such as rotation (up to 20 degrees), width and height shifts (up to 20%), shear transformations (up to 20%), zoom (up to 20%), and horizontal flips to enhance the diversity of the training data. This augmentation step ensures robustness and improves model generalization by simulating a variety of real-world conditions.
   - Dimensionality Reduction: Applies UMAP to reduce dimensionality while preserving data structure.
   - Clustering: Uses KMeans to group images into meaningful clusters.
   - Hyperparameter Optimization: Utilizes grid search to find the best parameters for UMAP and KMeans.
   - Output Structure: Saves images in labeled folders for easy analysis and presentation.
 
 - #### Second approach: Semi-supervised model
-  This approach involves two scripts: one for manual labeling of images and another for semi-supervised clustering using EfficientNetB0, LBP, HOG, UMAP, and COP-KMeans.
-  
+  This approach involves two scripts, the first one is designed to facilitate manual labeling of images. It provides an interactive user interface using OpenCV for image display and `ipywidgets` for creating dropdown menus and buttons. The process includes loading and displaying images, allowing the user to select labels from a dropdown menu, and saving the progress periodically. The second script employs semi-supervised clustering to classify images using a combination of EfficientNetB0 for deep feature extraction and custom features (LBP and HOG). It incorporates data augmentation, dimensionality reduction with UMAP, and clustering via the COP-KMeans algorithm, which utilizes must-link and cannot-link constraints derived from labeled data. The clustering results are saved into organized folders and a CSV file. Key evaluation metrics are calculated to gauge the quality of the clustering.
+
   **Features**:
     - Interactive UI for labeling images.
     - Saves labels to a CSV file for further analysis.
@@ -100,39 +105,70 @@ To recreate this project in environments other than Google Colab, refer to the `
     - Saves clustering results into folders and prints evaluation metrics.
 
 - #### Third Approach: Unsupervised Model with BERT and LayoutLM
-  This approach focuses on unsupervised clustering of document images. The process involves feature extraction using BERT and LayoutLM models, dimensionality reduction using PCA, and clustering with KMeans.
-  
+  This approach focuses on unsupervised clustering of document images. The process is divided into several key steps, involving feature extraction using BERT and LayoutLM models, dimensionality reduction using PCA, and clustering with KMeans. This method aims to cluster document images relying entirely on the intrinsic properties of the images and extracted features.
+
+
   **Key Steps and Features**:
-  1. Text and Layout Feature Extraction:
-     - Text Features with BERT: Utilizes a pre-trained BERT model to extract semantic features from the text within the document images.
-     - Layout Features with LayoutLM: Employs a pre-trained LayoutLM model to capture both textual and spatial information.
-  2. Dimensionality Reduction:
-     - Principal Component Analysis (PCA): Reduces the dimensionality of the combined text and layout feature vectors.
-  3. Clustering:
-     - KMeans Clustering: Groups the document images into clusters based on the reduced feature vectors. The optimal number of clusters is determined using the silhouette score.
+  1. **Text and Layout Feature Extraction**:
+     - Text Features with BERT: Utilizes a pre-trained BERT model to extract semantic features from the text within the document images. BERT's attention mechanism captures rich contextual information.
+     - Layout Features with LayoutLM: Employs a pre-trained LayoutLM model to capture both textual and spatial information. LayoutLM extends the BERT architecture to include layout information, which is crucial for understanding the structure of documents.
+  2. **Dimensionality Reduction**:
+     - Principal Component Analysis (PCA): Reduces the dimensionality of the combined text and layout feature vectors. PCA helps in retaining the most important features while reducing the computational complexity of the clustering process.
+  3. **Clustering**:
+     - KMeans Clustering: Groups the document images into clusters based on the reduced feature vectors. The optimal number of clusters is determined using the silhouette score, which measures the quality of the clustering.
   
   **Features**:
-  - BERT for Text Feature Extraction.
-  - LayoutLM for Layout Feature Extraction.
-  - PCA for Dimensionality Reduction.
-  - KMeans Clustering with Silhouette Analysis.
+    - BERT for Text Feature Extraction: Leverages the power of BERT to extract high-quality semantic features from the text within documents.
+    - LayoutLM for Layout Feature Extraction: Captures both textual and spatial information, providing a comprehensive feature representation of the documents.
+    - PCA for Dimensionality Reduction: Reduces the feature dimensionality, making the clustering process more efficient and manageable.
+    - KMeans Clustering with Silhouette Analysis: Determines the optimal number of clusters using silhouette scores and performs clustering accordingly.
 
 ### OCR
 
 - #### DnCNN
-  Image denoising is essential for enhancing the quality of images in various applications such as document digitization, medical imaging, and photography. The Deep Convolutional Neural Network (DnCNN) effectively removes noise by leveraging deep learning techniques.
+  
+  Image denoising is essential for enhancing the quality of images, the Deep Convolutional Neural Network (DnCNN) effectively removes noise by leveraging deep learning techniques, including residual learning and batch normalization, for efficient and stable performance.
   
   - **Inputs**: preprocessed images from image denoising
+    
   - **Outputs**: denoised and improved images
+    
   
   **Features**:
-  - Dataset Augmentation: Added 300 scanned document images to the dataset.
-  - Model Architecture: Increased the number of layers to 20.
-  - Early Stopping: Training stops when PSNR no longer improves.
-  - Image Transformation Pipeline: Converts images to grayscale, transforms to tensors, and normalizes.
+  - **CNN Training Dataset Augmentation**: Added 300 scanned document images to the dataset. This improves model performance by teaching it to handle real-world noise patterns specific to scanned documents.
+  - **Model Architecture**: Increased the number of layers to 20. Captures more complex noise patterns for better denoising performance.
+  - **Early Stopping**: Training stops when PSNR no longer improves. This prevents overfitting and saves computational resources by stopping at optimal performance.
+  - **Image Transformation Pipeline**: Converts images to grayscale, transforms to tensors, and normalizes. It prepares images effectively for the DnCNN model.
+
   
 - #### OCR
+    In this section a systematic approach of preprocessing, text extraction, spelling correction, and validation against English words ensures that the extracted text from images is as accurate and meaningful as possible. By comparing different preprocessing techniques and utilizing advanced NLP tools, the project aims to optimize OCR performance, providing valuable insights into the effectiveness of various methods in enhancing text extraction accuracy.
+  
+  - **Inputs**: images processed by the DnCNN.
 
+  - **Outputs**: json file with the text extracted.
+
+  
+  **Features**:
+  1.	**Performance Comparison**: Evaluating the performance of OCR on images processed by DnCNN versus the original images. This helps determine the effectiveness of denoising in improving text extraction accuracy.
+  
+  2.	**Text Extraction Using Tesseract OCR**: The primary task is to extract text from images using Tesseract OCR. The images undergo preprocessing to improve OCR accuracy, including:
+     
+     - **Grayscale Conversion**: Simplifies the image by removing color information.
+     - **Thresholding (Otsu's method)**: Binarizes the image to separate text from the background.
+     - **Median Blur**: Reduces noise to enhance text clarity.
+
+
+
+
+  
+  3.	**Understandable Words Count**: The extracted text is analyzed to count the number of understandable words. This is done by:
+     - Splitting the text into individual words.
+     - Comparing each word against a list of English words from the NLTK corpus.
+     - Returning the count of understandable words and the total number of words.
+
+
+![image](https://github.com/bsabatino1/ML_PROJECT_773381_group2/assets/94707288/117c5ac7-be82-4fb4-8727-0e30f8e32020)
 
 ## [Section 3] Experimental Design
 
@@ -188,7 +224,7 @@ The absence of labeled data can lead to less accurate clustering, as there are n
   -	Clustering Effectiveness: This index is useful for comparing the performance of different clustering models and determining which one provides the most distinct and cohesive clusters.
 
 
-## Results
+## [Section 4] Results
 
 ### Unsupervised model results
 1. **Average Silhouette Score**: 0.64
@@ -206,7 +242,16 @@ The absence of labeled data can lead to less accurate clustering, as there are n
 
 The silhouette score of 0.64, along with the low Davies-Bouldin Index of 0.58, indicates strong intra-cluster cohesion and distinct inter-cluster separation. The exceptionally high Calinski-Harabasz Index of 35,593.91 further confirms the effectiveness of the clustering solution, indicating that the clusters are well-defined and well-separated. Together, these results suggest that the unsupervised model using EfficientNetB0, KMeans, and UMAP is highly effective in creating meaningful and distinct clusters from the image data. 
 
-## AGGIUNGERE CONSIDERAZIONE SUL CLUSTER
+The clusters have been established as follows:
+**Cluster 1**: This cluster primarily comprises complex layouts, characterized by columns in the upper part and sections above.
+**Cluster 2**: This cluster primarily consists of letter layouts, which are composed of a single block of text.
+**Cluster 3**: This cluster predominantly contains biographies, organized into a few sections of text blocks.
+**Cluster 4**: This cluster primarily features less dense layouts that do not adhere to a specific pattern.
+**Cluster 5**: This cluster primarily includes standard curricula, generally consisting of two columns: the first column presents the section name, while the adjacent column displays the corresponding value.
+
+It is important to note that, despite the formation of these defined clusters, there are outliers from other clusters within each one. This is due to the fact that not every layout is distinctly defined.
+
+
 
 
 <img width="297" alt="image" src="https://github.com/bsabatino1/ML_PROJECT_773381_group2/assets/94707288/08ed3909-1f9f-472c-9367-e92b0eaaa5f3">
@@ -232,15 +277,59 @@ The combination of these indices suggests that while the semi-supervised approac
 
 <img width="385" alt="image" src="https://github.com/bsabatino1/ML_PROJECT_773381_group2/assets/94707288/a503a8f7-9908-49aa-a69b-7ccb9890b58f">
 
-### MODELLO FABBRI
+### Unsupervised Model with BERT and LayoutLM
+
+**Current Status**
+
+The script is designed to handle the task efficiently; however, the computational requirements exceed the available resources. As a result, the full results are not yet available. The initial tests have been conducted on a subset of 100 images, providing promising insights into the viability of the approach.
+
+**Initial Results**
+  - **Silhouette Score**: The initial clustering on 100 images yielded a silhouette score that indicates a reasonable separation between the clusters.
+  - **Cluster Folders**: The resultant cluster folders from the initial test show a potential for accurately grouping similar images, aligning with the project's objectives.
+
+**Challenges**
+The primary challenge encountered is the high computational power required to process the entire dataset. Running the script for the complete dataset is computationally intensive and exceeds the capacity of the current environment.
+
+At the moment of writing this report and the deadline, the script is in the process of running to completion. The full execution is expected to be completed a few hours after the deadline. The final results, including detailed analysis and updated metrics, will be provided as soon as the script finishes running.
+
+Despite the current computational limitations, the initial tests on a subset of the images demonstrate that the approach has significant potential. The methodology, once fully executed, is expected to deliver the desired results effectively. We will update the report with the final results and analysis shortly after the script completes its run.
 
 ### OCR RESULTS
 
-## Conclusions
+The OCR process generates a JSON file where the file name of the image serves as the key and the extracted text as the value. Despite enhancements made through the DnCNN to improve the quality of the scanned document, the extracted text remains incomplete due to the initial low quality of the scan.
+
+<img width="400" alt="image" src="https://github.com/bsabatino1/ML_PROJECT_773381_group2/assets/94707288/d70a5239-adc0-4f88-a945-e166fdf4a72b">
+
+
+## [Section 5] Conclusions
 
 ### Takeaway Points
 
+1.	**Model Performance**:
+    -	**Unsupervised Model**: Demonstrated high clustering effectiveness with a silhouette score of 0.64, a low Davies-Bouldin Index of 0.58, and a high Calinski-Harabasz Index of 35,593.91, indicating well-defined and distinct clusters.
+    
+    - **Semi-supervised Model**: Achieved a similar silhouette score of 0.64 but had a higher Davies-Bouldin Index of 5.01, reflecting potential issues with cluster compactness due to human labeling biases. The Calinski-Harabasz Index of 6,834.43 suggests good cluster definition but not as strong as the unsupervised model.
+      
+    - **BERT and LayoutLM Model**: Utilized advanced feature extraction methods, due to computational inefficiency it was not possible to complete the process.
+    
+2.	**Cluster Characteristics**:
+   -	Identified distinct clusters in résumés, such as complex layouts, letter layouts, biographies, less dense layouts, and standard curricula. However, outliers were present, indicating that not all layouts were distinctly defined.
+
+
+3.	**OCR and Denoising**:
+   - OCR was enhanced by using the DnCNN model for image denoising, but the extracted text was still incomplete due to the initial low quality of the scanned documents.
+
+
+
 ### Future Work
-- Higher computational power
-- Implementation of BERT on OCR
-- Addressing unanswered questions and next steps
+
+1.	**Higher Computational Power**:
+   - Investing in more computational resources to improve the performance and efficiency of feature extraction, dimensionality reduction, and clustering processes.
+
+2.	**BERT Implementation on OCR**:
+   - Implementing BERT for OCR to potentially enhance the accuracy and completeness of text extraction from scanned documents, leveraging BERT’s contextual text understanding capabilities.
+
+3.	**Handling Human Biases**:
+   - Developing strategies to mitigate human biases in the semi-supervised model’s manual labeling process to improve clustering accuracy and reduce high Davies-Bouldin Index values.
+
+
