@@ -243,10 +243,15 @@ The absence of labeled data can lead to less accurate clustering, as there are n
 The silhouette score of 0.64, along with the low Davies-Bouldin Index of 0.58, indicates strong intra-cluster cohesion and distinct inter-cluster separation. The exceptionally high Calinski-Harabasz Index of 35,593.91 further confirms the effectiveness of the clustering solution, indicating that the clusters are well-defined and well-separated. Together, these results suggest that the unsupervised model using EfficientNetB0, KMeans, and UMAP is highly effective in creating meaningful and distinct clusters from the image data. 
 
 The clusters have been established as follows:
+
 **Cluster 1**: This cluster primarily comprises complex layouts, characterized by columns in the upper part and sections above.
+
 **Cluster 2**: This cluster primarily consists of letter layouts, which are composed of a single block of text.
+
 **Cluster 3**: This cluster predominantly contains biographies, organized into a few sections of text blocks.
+
 **Cluster 4**: This cluster primarily features less dense layouts that do not adhere to a specific pattern.
+
 **Cluster 5**: This cluster primarily includes standard curricula, generally consisting of two columns: the first column presents the section name, while the adjacent column displays the corresponding value.
 
 It is important to note that, despite the formation of these defined clusters, there are outliers from other clusters within each one. This is due to the fact that not every layout is distinctly defined.
