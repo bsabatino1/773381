@@ -13,7 +13,7 @@ The aim of this project is to construct a model capable of accurately identifyin
 ## [Section 2] Methods
 
 ### Environment setup
-To recreate this project in environments other than Google Colab, refer to the `requirements.txt` file available in the GitHub repository. Alternatively, all necessary installations can be found within the notebook itself.
+To recreate this project in environments other than Google Colab, refer to the `requirements.txt` file available in the GitHub repository. Alternatively, all necessary installations can be found within the notebook itself. In addition, all the datasets are in this Google Drive folder: https://drive.google.com/drive/folders/1wzYtY5gt5dvjkq_12SjvP628Lgk6nTOn?usp=sharing
 
 ### Pre-Processing
 
